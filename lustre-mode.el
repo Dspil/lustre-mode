@@ -606,7 +606,7 @@
       (if (or (not compilation-ask-about-save)
 	      (y-or-n-p "Save file? "))
 	  (save-buffer)))
-  (let ((args (string-join (append lustre-mode-extra-args (list (buffer-file-name))))))
+  (let ((args (append lustre-mode-extra-args (list (buffer-file-name)))))
     (progn
       (delete-other-windows)
       ;; TODO let split horozontally
@@ -614,10 +614,10 @@
       (get-buffer-create "*run-lustre-mode*")
       (select-window (next-window))
       (switch-to-buffer "*run-lustre-mode*")
-      (start-process "lustre-mode-run"
-		     "*run-lustre-mode*"
-		     lustre-mode-executer-name
-		     args)
+      (apply 'start-process "lustre-mode-run"
+		         "*run-lustre-mode*"
+		         lustre-mode-executer-name
+		         args)
       (end-of-buffer)
       (select-window (next-window)))))
 
