@@ -96,6 +96,10 @@
 (defcustom lustre-mode-executer-name "jkind"
   "Name of the lustre executor"
   :group 'lustre-mode )
+
+(defcustom lustre-mode-extra-args nil
+  "Extra arguments to be passed to the lustre executor"
+  :group 'lustre-mode)
 ;;;; Variables
 
 
@@ -602,7 +606,7 @@
       (if (or (not compilation-ask-about-save)
 	      (y-or-n-p "Save file? "))
 	  (save-buffer)))
-  (let ((fichier (buffer-file-name)))
+  (let ((args (string-join (append lustre-mode-extra-args (list (buffer-file-name))))))
     (progn
       (delete-other-windows)
       ;; TODO let split horozontally
@@ -613,7 +617,7 @@
       (start-process "lustre-mode-run"
 		     "*run-lustre-mode*"
 		     lustre-mode-executer-name
-		     fichier)
+		     args)
       (end-of-buffer)
       (select-window (next-window)))))
 
